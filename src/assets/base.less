@@ -7,3 +7,45 @@ body{
     font-family: "微软雅黑";
     background: @bgcolor;
 }
+.app_page{
+    height: 100vh;
+}
+header{
+    height: 60px;
+    background: #fff;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .right{ 
+        a{
+            display: block;
+            color:black;
+            &:hover{
+                color:#40a9ff;
+            }
+            .avatar{
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                margin-right:10px ;
+            }
+        }
+    }      
+}
+
+footer{
+    height: 40px;
+    background: #fafcfe;
+    color: rgb(162, 156, 156);
+    font-size: 12px;
+    text-align: center;
+    line-height: 40px;
+    position: absolute;
+    bottom: 0px;
+    left: 200px;
+    right: 0;
+}
+.logo{
+    width: 180px;
+}
