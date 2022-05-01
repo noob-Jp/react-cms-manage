@@ -1,5 +1,5 @@
 import App from "./App";
-import "./assets/base.css";
+import "./assets/base.less";
 import { createRoot } from "react-dom/client";
 // import { Provider } from "react-redux";
 // import store from './store'
