@@ -1,16 +1,32 @@
 import React from "react";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Checkbox,message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import "./less/Login.less";
 import myLogo from "../assets/mylogo.png";
+import {reqLogin}  from '../request/api.js'
 export default function Login() {
+  const navigate=useNavigate();
   const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    reqLogin({
+      username:values.username,
+      password:values.password
+    }).then((res)=>{
+      console.log(res);
+      if(res.errCode===0){
+        localStorage.setItem('avatar',res.data.avatar);
+        localStorage.setItem('cms-token',res.data['cms-token']);
+        localStorage.setItem('player',res.data.player);
+        localStorage.setItem('username',res.data.username);
+        localStorage.setItem('editable',res.data.editable);
+        message.success('登录成功');
+        setTimeout(()=>{
+          navigate('/')
+        },1500)
+      }else{
+        message.error(res.message);
+      }
+    })
   };
 
   return (
@@ -23,7 +39,6 @@ export default function Login() {
             remember: true,
           }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item
