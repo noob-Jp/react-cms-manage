@@ -32,7 +32,7 @@ export default function Login() {
   return (
     <div className="login">
       <div className="login_box">
-        <img src={myLogo} />
+        <img src={myLogo} alt="LOGO"/>
         <Form
           name="basic"
           initialValues={{
