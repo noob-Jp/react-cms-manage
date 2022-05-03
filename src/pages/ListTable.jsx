@@ -22,7 +22,7 @@ export default function ListTable() {
 
   useEffect(()=>{
     getArticle(pagination.current,pagination.pageSize);
-  },[pagination])
+  },[])
   //分页器切换
   const pageChange=(arg)=>getArticle(arg.current,arg.pageSize);
   //提取请求文章列表代码
