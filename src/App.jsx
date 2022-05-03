@@ -1,11 +1,16 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Outlet } from "react-router-dom";
 import { Layout} from "antd";
 import Headers from "./components/Header";
 import Siderbar from "./components/Sider";
 import Bread from "./components/Bread";
+import { useNavigate } from "react-router-dom";
 export default function App() {
   const {  Sider, Content } = Layout;
+  const navigate=useNavigate();
+  useEffect(()=>{
+    navigate('/list');
+  },[])
   return (
     <div>
       <Layout className="app_page">

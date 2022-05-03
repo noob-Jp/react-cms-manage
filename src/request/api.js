@@ -10,6 +10,10 @@ export const reqGetArticleList = (params) => request.get('/article', {params})
 export const reqAddArticle = (params) => request.post('/article/add', params)
 // 更新文章
 export const reqUpdateArticle = (params) => request.put('/article/update', params)
+// 查看文章
+export const reqSearchArticle = (params) => request.get(`/article/${params.id}`)
+// 删除文章
+export const reqDelArticle = (params) => request.post('/article/remove', params)
 
 
 

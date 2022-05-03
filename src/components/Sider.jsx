@@ -14,8 +14,10 @@ export default function Sider() {
   //一般加个空数组，就是为了模仿componentDidMounted
   useEffect(()=>{
     let path=location.pathname;
-    setDefaultKey(path)
-  },[location])
+    let key=path.split('/')[1];
+    // console.log(key);
+    setDefaultKey(key)
+  },[location.pathname])
   function getItem(label, key, icon, children, type) {
     return {
       key,
@@ -26,9 +28,9 @@ export default function Sider() {
     };
   }
   const items = [
-    getItem("查看文章列表", "/list", <PieChartOutlined />),
-    getItem("文章编辑", "/edit", <DesktopOutlined />),
-    getItem("修改资料", "/means", <MailOutlined />),
+    getItem("查看文章列表", "list", <PieChartOutlined />),
+    getItem("文章编辑", "edit", <DesktopOutlined />),
+    getItem("修改资料", "means", <MailOutlined />),
   ];
   const [collapsed, setCollapsed] = React.useState(false);
 
@@ -37,7 +39,7 @@ export default function Sider() {
   };
   const handleClick = (e) => {
     // console.log(e);
-    navigate(e.key);
+    navigate('/'+e.key);
     setDefaultKey(e.key)
   };
   return (
@@ -47,7 +49,6 @@ export default function Sider() {
       }}
     >
       <Menu
-        defaultSelectedKeys={['/list']}
         selectedKeys={[defaultKey]}
         defaultOpenKeys={["sub1"]}
         mode="inline"

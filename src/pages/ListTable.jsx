@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Table, Space, Button } from "antd";
-// import { useNavigate } from "react-router-dom";
-import {reqGetArticleList} from '../request/api'
+import { Table, Space, Button ,Popconfirm,message} from "antd";
+import { useNavigate } from "react-router-dom";
+import {reqGetArticleList,reqDelArticle} from '../request/api'
 import moment from "moment";
 
 //标题组件
@@ -16,10 +16,11 @@ function Mytitle(props){
 export default function ListTable() {
   //列表数据
   const [arr,setArr]=useState([]);
-  // const navigate=useNavigate();
+  const navigate=useNavigate();
   //分页
   const [pagination,setPagination] =useState({current:1,pageSize:10,total:0});
-
+  //文章id
+  const [articleId,setArticleId]=useState('');
   useEffect(()=>{
     getArticle(pagination.current,pagination.pageSize);
   },[])
@@ -54,7 +55,25 @@ export default function ListTable() {
         setArr(myArr);
       }
     })
+  };
+  //气泡确认框点击事件
+  function confirm(id) {
+    // console.log(id);
+    reqDelArticle({id:id}).then((res)=>{
+      if(res.errCode===0){ 
+        message.success(res.message);
+        getArticle(1,pagination.pageSize);
+      }
+      else{
+        message.error(res.message);
+      }
+    })
   }
+  
+  function cancel(e) {
+    message.success("点击了取消");
+  }
+
   const columns = [
     {
       title: "标题",
@@ -75,8 +94,16 @@ export default function ListTable() {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <Button type="primary">编辑</Button>
-          <Button type="danger">删除</Button>
+          <Button type="primary" onClick={()=>navigate('/edit/'+text.key)}>编辑</Button>
+          <Popconfirm
+            title="是否删除这篇文章?"
+            onConfirm={()=>confirm(text.key)}
+            onCancel={cancel}
+            okText="Yes"
+            cancelText="No"
+          >
+             <Button type="danger">删除</Button>
+          </Popconfirm> 
         </Space>
       ),
     },

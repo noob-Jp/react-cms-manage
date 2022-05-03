@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { PageHeader, Button, Modal, Form, Input, message } from "antd";
 import moment from "moment";
 import E from "wangeditor";
-import {reqAddArticle,reqUpdateArticle} from '../request/api';
+import {reqAddArticle,reqUpdateArticle,reqSearchArticle} from '../request/api';
 import {useNavigate, useParams} from 'react-router-dom';
 let editor = null;
 export default function Edit() {
   const [content, setContent] = useState("");
+  const [title,setTitle] =useState('');
+  const [subTitle,setSubTitle]=useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const params=useParams();
@@ -19,6 +21,17 @@ export default function Edit() {
     //创建实例
     editor.create();
 
+    //根据地质栏id做请求
+    if(params.id){
+      reqSearchArticle({id:params.id}).then((res)=>{
+        if(res.errCode==0){
+          editor.txt.html(res.data.content)
+          setTitle(res.data.title);
+          setSubTitle(res.data.subTitle);
+        }
+      })  
+    }
+    
     return () => {
       //组件销毁时销毁编辑器，
       editor.destroy();
@@ -44,17 +57,17 @@ export default function Edit() {
     form.validateFields().then((values)=>{
       console.log(values);
       //解构对话框中标题与副标题的值
-      let {title,subtitle} =values;
+      let {title,subTitle} =values;
       //地址栏有id的话，代表现在是要更新文章
       if(params.id){
         //更新文章的请求
-        reqUpdateArticle({title,subtitle,content,id:params.id})
+        reqUpdateArticle({title,subTitle,content,id:params.id})
           .then((res)=>{
             dealData(res.errCode,res.message);
           })
       }else{
         //添加文章的请求
-        reqAddArticle({title,subtitle,content})
+        reqAddArticle({title,subTitle,content})
         .then((res)=>{
           dealData(res.errCode,res.message);
         })
@@ -110,12 +123,10 @@ export default function Edit() {
           wrapperCol={{
             span: 20,
           }}
-          initialValues={{
-            remember: true,
-          }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
+          initialValues={{title,subTitle}}
         >
           <Form.Item
             label="标题"
@@ -132,7 +143,7 @@ export default function Edit() {
 
           <Form.Item
             label="副标题"
-            name="subtitle"
+            name="subTitle"
           >
             <Input />
           </Form.Item>
