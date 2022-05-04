@@ -15,9 +15,11 @@ export const reqSearchArticle = (params) => request.get(`/article/${params.id}`)
 // 删除文章
 export const reqDelArticle = (params) => request.post('/article/remove', params)
 
+// 获取用户资料
+export const reqGetUserData = () => request.get('/info')
 
-
-
+// 修改用户资料
+export const reqChangeUserData = (params) => request.put('/info', params)
 
 
 

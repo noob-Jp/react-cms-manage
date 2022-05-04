@@ -5,7 +5,9 @@ import Headers from "./components/Header";
 import Siderbar from "./components/Sider";
 import Bread from "./components/Bread";
 import { useNavigate } from "react-router-dom";
-export default function App() {
+import { connect } from "react-redux";
+
+function App(props) {
   const {  Sider, Content } = Layout;
   const navigate=useNavigate();
   useEffect(()=>{
@@ -14,7 +16,7 @@ export default function App() {
   return (
     <div>
       <Layout className="app_page">
-       <Headers></Headers>
+       <Headers key={props.mykey}></Headers>
         <Layout>
           <Sider><Siderbar></Siderbar></Sider>
           <Content className="container_box">
@@ -30,3 +32,10 @@ export default function App() {
     </div>
   );
 }
+
+const mapStateToProps=(state)=>{
+  return{
+    mykey:state.mykey
+  }
+}
+export default connect(mapStateToProps)(App)
